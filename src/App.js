@@ -9,8 +9,11 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Button
 } from 'react-native';
+
+import { StackNavigator } from 'react-navigation'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -19,21 +22,37 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-export default class App extends Component<{}> {
+class HomeScreen extends Component {
+  static navigationOptions = {
+    title: 'Home',
+  }
   render() {
+    const { navigate } = this.props.navigation
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome to React Native Naivgation Example!
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <Button
+          onPress={() => navigate('ChatScreen', {user: 'Jiten'})}
+          title="Chat with Jiten"
+        />
       </View>
     );
+  }
+}
+
+class ChatScreen extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'Chat with ' + navigation.state.params.user
+  })
+  render() {
+    const { params } = this.props.navigation.state
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>Chat with {params.user}</Text>
+      </View>
+    )
   }
 }
 
@@ -55,3 +74,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+export const App = StackNavigator({
+    Home: {screen : HomeScreen},
+    ChatScreen: {screen: ChatScreen}
+})
