@@ -13,7 +13,7 @@ import {
   Button
 } from 'react-native';
 
-import { StackNavigator } from 'react-navigation'
+import { TabNavigator, StackNavigator } from 'react-navigation'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -47,15 +47,38 @@ class ChatScreen extends Component {
     title: 'Chat with ' + navigation.state.params.user
   })
   render() {
-    const { params } = this.props.navigation.state
+    //const { params } = this.props.navigation.state
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Chat with {params.user}</Text>
+        <Text style={styles.welcome}>Chat with Jiten</Text>
       </View>
     )
   }
 }
+class RecentChatsScreen extends React.Component {
+  render() {
+    return <Text>List of recent chats</Text>
+  }
+}
+class AllContactsScreen extends React.Component {
+  render() {
+    return (<Text>List of all contacts</Text>)
+  }
+}
 
+const MainScreenNavigator = TabNavigator({
+  AllContact: { screen : HomeScreen},
+  Recent : {screen: RecentChatsScreen},
+})
+const App = StackNavigator({
+    Home: {
+      screen : MainScreenNavigator,
+      navigationOptions: {
+        title: 'My Chats',
+      },
+    },
+    ChatScreen: {screen: ChatScreen}
+})
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -74,8 +97,4 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
-
-export const App = StackNavigator({
-    Home: {screen : HomeScreen},
-    ChatScreen: {screen: ChatScreen}
-})
+export default App
